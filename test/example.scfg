@@ -1,12 +1,11 @@
 // this is a comment
 import $consts from "./consts.scfg";
 
-const $jump = +jump;
+$consts.set_key "space" "duck" 0;
+
+bind "space" "$consts.doJump" 0;
+bind "z" "$consts.ult" 0;
+
+
 const $reload = +reload;
-
-bind "space" "$jump 0" 0;
-bind "a" "$consts.doJump" 0;
-bind "z" "$consts.alt" 0;
 bind "r" "$reload" 0;
-
-$consts.bind "space" "$jump 0" 0;
