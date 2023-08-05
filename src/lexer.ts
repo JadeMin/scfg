@@ -1,44 +1,46 @@
-import { Tokenizr } from 'ts-tokenizr';
+import { type Token, Tokenizr } from 'ts-tokenizr';
 
-const lexer = new Tokenizr();
-//lexer.debug(true);
+import { TokenTypes } from "./tokenTypes.ts";
+
+const tokenizr = new Tokenizr();
+//tokenizr.debug(true);
 
 /*lexer.rule(/exec\s/, (ctx, match) => {
     ctx.accept("exec");
 });*/
-lexer.rule(/export\s([a-zA-Z0-9_]+)\s?=/, (ctx, match) => {
-    ctx.accept("export", match[1]);
+tokenizr.rule(/export\s([a-zA-Z0-9_]+)\s?=/, (ctx, match) => {
+    ctx.accept(TokenTypes.EXPORT, match[1]);
 });
-lexer.rule(/import\s(\$[a-zA-Z0-9_]+)\sfrom/, (ctx, match) => {
-    ctx.accept("import", match[1]);
+tokenizr.rule(/import\s(\$[a-zA-Z0-9_]+)\sfrom/, (ctx, match) => {
+    ctx.accept(TokenTypes.IMPORT, match[1]);
 });
-lexer.rule(/const\s?(\$[a-zA-Z0-9_]+)\s?=/, (ctx, match) => {
-    ctx.accept("define", match[1]);
+tokenizr.rule(/const\s?(\$[a-zA-Z0-9_]+)\s?=/, (ctx, match) => {
+    ctx.accept(TokenTypes.DEFINE, match[1]);
 });
-lexer.rule(/[+]?[a-zA-Z_][a-zA-Z0-9_]*/, (ctx, match) => {
-    ctx.accept("call");
+tokenizr.rule(/\+?[$a-zA-Z][a-zA-Z0-9_.]*/, (ctx, match) => {
+    ctx.accept(TokenTypes.CALL);
 });
-lexer.rule(/[+-]?[0-9]+/, (ctx, match) => {
-    ctx.accept("number", +match[0]);
+tokenizr.rule(/[+-]?[0-9]+/, (ctx, match) => {
+    ctx.accept(TokenTypes.NUMBER, +match[0]);
 });
-lexer.rule(/"([\\/.-_+$a-zA-Z0-9\s]*)"/, (ctx, match) => {
-    ctx.accept("string", match[1].replace(/\\"/g, "\""));
+tokenizr.rule(/"([\\/.-_+$a-zA-Z0-9\s]*)"/, (ctx, match) => {
+    ctx.accept(TokenTypes.STRING, match[1].replace(/\\"/g, "\""));
 });
-lexer.rule(/\r?\n/, (ctx, match) => {
-    ctx.accept("newline");
+tokenizr.rule(/\r?\n/, (ctx, match) => {
+    ctx.accept(TokenTypes.NEWLINE);
 });
-lexer.rule(/;+/, (ctx, match) => {
+tokenizr.rule(/;+/, (ctx, match) => {
     ctx.ignore();
 });
-lexer.rule(/\/\/[^\r\n]*\r?\n/, (ctx, match) => {
+tokenizr.rule(/\/\/[^\r\n]*\r?\n/, (ctx, match) => {
     ctx.ignore();
 });
-lexer.rule(/[\s\t\r\n]+/, (ctx, match) => {
+tokenizr.rule(/[\s\t\r\n]+/, (ctx, match) => {
     ctx.ignore();
 });
 
 
 
-export function tokenize(content: string) {
-	return lexer.tokenize(content);
+export function lexer(content: string): Token[] {
+	return tokenizr.tokenize(content);
 };

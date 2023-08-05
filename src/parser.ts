@@ -1,30 +1,32 @@
-import { tokenize } from "./lexer.ts";
+import { lexer } from "./lexer.ts";
+
+import { TokenTypes } from "./tokenTypes.ts";
 
 
 
-export function parse(content: string) {
-	const tokens = tokenize(content);
+export function parse(content: string): any[] {
+	const tokens = lexer(content);
 
 	const root: any[] = [];
 	let working = root;
 
 	for(const token of tokens) {
 		switch(token.type) {
-			case "exec":
-			case "import":
-			case "export":
-			case "define":
-			case "call": {
+			case TokenTypes.EXEC:
+			case TokenTypes.IMPORT:
+			case TokenTypes.EXPORT:
+			case TokenTypes.DEFINE:
+			case TokenTypes.CALL: {
 				const newNode = {
 					...token,
-					children: [] as any[]
+					args: [] as any[]
 				};
 				working.push(newNode);
-				working = newNode.children;
+				working = newNode.args;
 				break;
 			}
-			case "newline":
-			case "EOF": {
+			case TokenTypes.NEWLINE:
+			case TokenTypes.EOF: {
 				working = root;
 				break;
 			}
