@@ -1,0 +1,10 @@
+// this is a comment
+import $consts from "./consts.scfg";
+
+const $jump = +jump;
+const $reload = +reload;
+
+bind "space" "$jump 0" 0;
+bind "a" "$consts.doJump" 0;
+bind "z" "$consts.alt" 0;
+bind "r" "$reload" 0;
