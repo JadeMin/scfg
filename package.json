@@ -5,10 +5,10 @@
 		"test": "tsx ./test/build.ts"
 	},
 	"dependencies": {
-		"ts-tokenizr": "^1.1.1"
+		"ts-tokenizr": "^1.1.1",
+		"tsx": "^3.12.7"
 	},
 	"devDependencies": {
-		"@types/node": "^20.4.7",
-		"tsx": "^3.12.7"
+		"@types/node": "^20.4.7"
 	}
 }
